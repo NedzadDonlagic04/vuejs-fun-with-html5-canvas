@@ -6,7 +6,8 @@ export default {
             draw: false,
             color: 0,
             lastX: null,
-            lastY: null
+            lastY: null,
+            lineWidthState: false
         };
     },
     computed: {
@@ -35,12 +36,23 @@ export default {
                 this.color = 0;
             }
 
+            (this.lineWidthState)? this.context.lineWidth-- : this.context.lineWidth++;
+
             this.context.moveTo(this.lastX, this.lastY);
             this.context.lineTo(offsetX, offsetY);  
             this.context.stroke();
 
             this.lastX = offsetX;
             this.lastY = offsetY;
+
+            if(this.context.lineWidth === 100)
+            {
+                this.lineWidthState = true;
+            }
+            else if(this.context.lineWidth === 10)
+            {
+                this.lineWidthState = false;
+            }
         },  
         mouseDownHandler(event) {
             this.lastX = event.offsetX;
