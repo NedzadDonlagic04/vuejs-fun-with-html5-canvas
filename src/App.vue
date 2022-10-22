@@ -16,16 +16,20 @@ export default {
         }
     },
     mounted() {
-        this.$refs.canvas.height = window.innerHeight;
-        this.$refs.canvas.width = window.innerWidth;
-
         this.context = this.$refs.canvas.getContext('2d');
+        
+        this.setDefault();
 
-        this.context.lineWidth = 10;
-        this.context.lineCap = 'round';
-        this.context.lineJoin = 'round';
+        window.addEventListener('resize', this.setDefault);
     },
     methods: {
+        setDefault() {
+            this.$refs.canvas.height = window.innerHeight;
+            this.$refs.canvas.width = window.innerWidth;
+            this.context.lineWidth = 10;
+            this.context.lineCap = 'round';
+            this.context.lineJoin = 'round';
+        },
         drawLine({ offsetX, offsetY }) {
             this.context.beginPath();
             this.context.strokeStyle = this.hslColor;
@@ -45,11 +49,11 @@ export default {
             this.lastX = offsetX;
             this.lastY = offsetY;
 
-            if(this.context.lineWidth === 100)
+            if(this.context.lineWidth >= 100)
             {
                 this.lineWidthState = true;
             }
-            else if(this.context.lineWidth === 10)
+            else if(this.context.lineWidth <= 10)
             {
                 this.lineWidthState = false;
             }
